@@ -15,11 +15,11 @@ class Album extends Model
         'genero',
         'fecha_lanzamiento',
         'num_canciones',
-        'es_explicit'
+        'es_explicit',
     ];
 
     protected $casts = [
-        'es_explicit' => 'boolean',
         'fecha_lanzamiento' => 'date',
+        'es_explicit' => 'boolean',
     ];
 }

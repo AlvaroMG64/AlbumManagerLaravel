@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class AlbumController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $albums = Album::orderBy('titulo', 'asc')->get();
+        $albums = Album::all();
         return view('albums.index', compact('albums'));
     }
 
@@ -26,13 +31,11 @@ class AlbumController extends Controller
             'genero' => 'required|string|max:50',
             'fecha_lanzamiento' => 'required|date',
             'num_canciones' => 'required|integer|min:1',
-            'es_explicit' => 'required|boolean',
+            'es_explicit' => 'nullable|boolean',
         ]);
 
         Album::create($request->all());
-
-        return redirect()->route('albums.index')
-            ->with('success', 'Álbum creado correctamente.');
+        return redirect()->route('albums.index')->with('success', 'Álbum creado correctamente.');
     }
 
     public function edit(Album $album)
@@ -48,19 +51,16 @@ class AlbumController extends Controller
             'genero' => 'required|string|max:50',
             'fecha_lanzamiento' => 'required|date',
             'num_canciones' => 'required|integer|min:1',
-            'es_explicit' => 'required|boolean',
+            'es_explicit' => 'nullable|boolean',
         ]);
 
         $album->update($request->all());
-
-        return redirect()->route('albums.index')
-            ->with('success', 'Álbum actualizado correctamente.');
+        return redirect()->route('albums.index')->with('success', 'Álbum actualizado correctamente.');
     }
 
     public function destroy(Album $album)
     {
         $album->delete();
-        return redirect()->route('albums.index')
-            ->with('success', 'Álbum eliminado correctamente.');
+        return redirect()->route('albums.index')->with('success', 'Álbum eliminado correctamente.');
     }
 }
