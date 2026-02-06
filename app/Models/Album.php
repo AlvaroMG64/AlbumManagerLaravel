@@ -9,13 +9,9 @@ class Album extends Model
 {
     use HasFactory;
 
-    protected $table = 'albums';
+    protected $table = 'albums'; // coincida con tu tabla
 
     protected $primaryKey = 'idAlbum';
-
-    public $incrementing = true;
-
-    protected $keyType = 'int';
 
     protected $fillable = [
         'titulo',
@@ -26,8 +22,8 @@ class Album extends Model
         'es_explicit',
     ];
 
-    public function getRouteKeyName()
-    {
-        return 'idAlbum';
-    }
+    protected $casts = [
+        'es_explicit' => 'boolean',
+        'fecha_lanzamiento' => 'date',
+    ];
 }

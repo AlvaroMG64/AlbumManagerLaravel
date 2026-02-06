@@ -3,35 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Album Manager</title>
+    <title>@yield('title', 'Album Manager')</title>
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .card {
+            border-radius: 15px;
+        }
+        .container {
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+        .badge-explicit {
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .explicit-yes {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+        .explicit-no {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navbar simple -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Album Manager</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('albums.index') }}">Álbumes</a>
-                    </li>
-                </ul>
+            <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">Album Manager</a>
+
+            <div class="collapse navbar-collapse justify-content-end">
+                @auth
+                    <span class="navbar-text me-3">{{ auth()->user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
+                    </form>
+                @endauth
             </div>
         </div>
     </nav>
 
-    <!-- Contenido principal -->
-    <div class="container">
-        @yield('content')
-    </div>
+    @yield('content')
 
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

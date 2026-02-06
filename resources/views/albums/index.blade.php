@@ -1,53 +1,41 @@
 @extends('layouts.app')
 
+@section('title', 'Listado de Álbumes')
+
 @section('content')
 <div class="container">
-    <h1>Álbumes</h1>
+    <h1 class="text-center mb-4">Listado de Álbumes</h1>
 
-    <a href="/albums/create" class="btn btn-primary mb-3">
-        Nuevo álbum
-    </a>
+    <div class="text-center mb-3">
+        <a href="{{ route('albums.create') }}" class="btn btn-success">Añadir nuevo álbum</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary">Volver al dashboard</a>
+    </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Artista</th>
-                <th>Género</th>
-                <th>Fecha</th>
-                <th>Canciones</th>
-                <th>Explicit</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach ($albums as $album)
-            <tr>
-                <td>{{ $album->titulo }}</td>
-                <td>{{ $album->artista }}</td>
-                <td>{{ $album->genero }}</td>
-                <td>{{ $album->fecha_lanzamiento }}</td>
-                <td>{{ $album->num_canciones }}</td>
-                <td>{{ $album->es_explicit ? 'Sí' : 'No' }}</td>
-                <td>
-                    <a href="/albums/{{ $album->idAlbum }}/edit"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
-
-                    <form action="/albums/{{ $album->idAlbum }}"
-                          method="POST"
-                          style="display:inline;">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach ($albumes as $album)
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $album->titulo }}</h5>
+                    <p class="card-text mb-1"><strong>Artista:</strong> {{ $album->artista }}</p>
+                    <p class="card-text mb-1"><strong>Género:</strong> {{ $album->genero }}</p>
+                    <p class="card-text mb-1"><strong>Fecha de lanzamiento:</strong> {{ $album->fecha_lanzamiento->format('d/m/Y') }}</p>
+                    <p class="card-text mb-1"><strong>Número de canciones:</strong> {{ $album->num_canciones }}</p>
+                    <p class="badge-explicit {{ $album->es_explicit ? 'explicit-yes' : 'explicit-no' }}">
+                        {{ $album->es_explicit ? 'Explícito' : 'No explícito' }}
+                    </p>
+                </div>
+                <div class="card-footer text-center d-flex gap-2 justify-content-center flex-wrap">
+                    <a href="{{ route('albums.edit', $album) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ route('albums.destroy', $album) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger btn-sm">
-                            Eliminar
-                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar este álbum?')">Eliminar</button>
                     </form>
-                </td>
-            </tr>
+                </div>
+            </div>
+        </div>
         @endforeach
-        </tbody>
-    </table>
+    </div>
 </div>
 @endsection

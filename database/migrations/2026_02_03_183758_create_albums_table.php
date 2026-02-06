@@ -9,18 +9,18 @@ return new class extends Migration {
     {
         Schema::create('albums', function (Blueprint $table) {
             $table->id('idAlbum');
-            $table->string('titulo', 100);
-            $table->string('artista', 100);
-            $table->string('genero', 50);
+            $table->string('titulo');
+            $table->string('artista');
+            $table->string('genero', 100);
             $table->date('fecha_lanzamiento');
             $table->integer('num_canciones');
-            $table->boolean('es_explicit');
+            $table->boolean('es_explicit')->default(false);
             $table->timestamps();
         });
     }
 
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('albumes');
+        Schema::dropIfExists('albums');
     }
 };
