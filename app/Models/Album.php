@@ -9,9 +9,11 @@ class Album extends Model
 {
     use HasFactory;
 
-    protected $table = 'albums'; // coincida con tu tabla
+    protected $table = 'albums';
 
     protected $primaryKey = 'idAlbum';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'titulo',
@@ -22,8 +24,9 @@ class Album extends Model
         'es_explicit',
     ];
 
-    protected $casts = [
-        'es_explicit' => 'boolean',
-        'fecha_lanzamiento' => 'date',
-    ];
+    // IMPORTANTE: para route model binding
+    public function getRouteKeyName()
+    {
+        return 'idAlbum';
+    }
 }

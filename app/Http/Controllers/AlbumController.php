@@ -14,8 +14,8 @@ class AlbumController extends Controller
 
     public function index()
     {
-        $albumes = Album::orderBy('titulo', 'asc')->get();
-        return view('albums.index', compact('albumes'));
+        $albums = Album::orderBy('titulo')->get();
+        return view('albums.index', compact('albums'));
     }
 
     public function create()
@@ -25,18 +25,19 @@ class AlbumController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'titulo' => 'required|string|max:255',
             'artista' => 'required|string|max:255',
             'genero' => 'required|string|max:100',
             'fecha_lanzamiento' => 'required|date',
-            'num_canciones' => 'required|integer|min:1',
-            'es_explicit' => 'required|boolean',
+            'num_canciones' => 'required|integer',
+            'es_explicit' => 'nullable|boolean',
         ]);
 
-        Album::create($request->all());
+        $data['es_explicit'] = $request->has('es_explicit');
+        Album::create($data);
 
-        return redirect()->route('albums.index')->with('success', 'Álbum creado correctamente.');
+        return redirect()->route('albums.index')->with('success', 'Álbum creado correctamente');
     }
 
     public function edit(Album $album)
@@ -46,23 +47,24 @@ class AlbumController extends Controller
 
     public function update(Request $request, Album $album)
     {
-        $request->validate([
+        $data = $request->validate([
             'titulo' => 'required|string|max:255',
             'artista' => 'required|string|max:255',
             'genero' => 'required|string|max:100',
             'fecha_lanzamiento' => 'required|date',
-            'num_canciones' => 'required|integer|min:1',
-            'es_explicit' => 'required|boolean',
+            'num_canciones' => 'required|integer',
+            'es_explicit' => 'nullable|boolean',
         ]);
 
-        $album->update($request->all());
+        $data['es_explicit'] = $request->has('es_explicit');
+        $album->update($data);
 
-        return redirect()->route('albums.index')->with('success', 'Álbum actualizado correctamente.');
+        return redirect()->route('albums.index')->with('success', 'Álbum actualizado correctamente');
     }
 
     public function destroy(Album $album)
     {
         $album->delete();
-        return redirect()->route('albums.index')->with('success', 'Álbum eliminado correctamente.');
+        return redirect()->route('albums.index')->with('success', 'Álbum eliminado correctamente');
     }
 }
